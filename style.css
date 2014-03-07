@@ -1,8 +1,12 @@
+:root{
+    -webkit-var-trT : 0.2s;
+}
+
 html,body{
     height:100%;
     margin:0;
     background-color: #e5fffd;
-    font-family: 'Gafata', sans-serif;
+    font-family: 'Gafata', sans-serif;    
 }
 
 h1{
@@ -58,12 +62,13 @@ li:hover{
     top: 80px;
     left: 10px;
     width: 250px;
+    text-shadow: 2px 2px 4px #e5fffd;
 }
 
 #menuSopra{
     background-color: #0014ff;
     float: left;
-    width: 85%;
+    width: 100%;
     min-width: 0px;
     height: auto;
     min-height: 30px;
@@ -107,6 +112,18 @@ div.ulTitle1{
     position: fixed;
     left: 0;
     text-align: right;
+}
+
+div li div a{
+    padding-right: 5px;
+}
+
+div.ulTitle1:hover{
+    background-color: #b3fff8;
+}
+
+div.ulTitle2:hover{
+    background-color: #b3fff8;
 }
 
 div.ulTitle2{
@@ -156,38 +173,77 @@ th{
     background-color: #0ff;
 }
 
-/*ul#nav,ul#nav li,ul#nav ul{margin: 0;padding: 0;list-style: none;line-height: 1.8em}
-ul#nav a{display: block;padding: 0 1em;text-decoration: none;color:#3B5998}
-ul#nav a:hover{color: #121B36}*/
-
-/*ul#nav li{float: left;position: relative}
-ul#nav li li{float: none}*/
-
 #nav{
     text-align: left;
 }
 
-ul#nav ul{
-    position: absolute;
-    top: 0px;
-    left: -9999px;
-    width: 200px;
-}
-ul#nav li:hover ul{     /*quando compare il menu a scoparsa da sinsitra*/
-    
+#menu1{
+    transition-duration: 0.2s;
+    position: fixed;
     left: 140px;
-    //border-top: -200px;
-    background-color: #e5fffd;  
+    top: 80px;
+    position: fixed;
+    top: 80px;
+    width: 250px;
 }
 
-ul#nav,ul#nav li,ul#nav ul{
+#menu2{
+    transition-duration: 0.2s;
+    position: fixed;
+    left: 140px;
+    top: 110px;
+   
+    position: fixed;
+    top: 110px;
+    width: 250px;
+}
+
+.menuSxVisible{     /*quando compare il menu a scoparsa da sinsitra*/
+    display: block;
+    visibility: visible;
+    
+    padding-left: 10px;
+    padding-left: 10px;
+    
+    opacity: 100;
+    /*border-top: -200px;*/
+    background-color: #55c5ff;  
+    transform: translate(10px,0px);
+    -ms-transform: translate(10px,0px);
+    -webkit-transform: translate(10px,0px); 
+    -o-transform: translate(10px,0px); 
+    -moz-transform: translate(10px,0px); 
+}
+
+.menuSxVisible li a{    /*Imposto che il menu sia visibile*/
+    opacity: 100;
+}
+
+.none li a{    /*setto l'opacita a 0 del testo e imposto i secondi per la sua transazione da trasparente ad opaco*/
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+    
+    -webkit-transition-property: opacity; 
+    -webkit-transition-duration: 0.2s;
+         
+    -o-transition-property: opacity;      
+    -o-transition-duration: 0.2s;
+         
+    -moz-transition-property: opacity;   
+    -moz-transition-duration: 0.2s;
+}
+
+.none{  /*nascondo il menu*/
+    visibility: hidden;
+}
+
+ul#nav,ul#nav li,ul#nav ul{     /*setto le proprieta della lista ul con l'id nav e delle sottoliste*/
     margin:0;
     padding:0;
     list-style:none        
 }
-ul#nav{
-    
-}
+
 
 
 ul#nav li li{
@@ -197,18 +253,7 @@ ul#nav li li{
     
 }
 
-ul#nav ul{
-    padding: 7px 0;
-    border: 1px solid #3B5998
-    
-}
-ul#nav ul,ul#nav li li a{
-    
-    
-}
-ul#nav li:hover,ul#nav a:hover{
-    //background-color: #0082ff;
-    //color: #FFF
-    
+ul#nav ul,ul#nav li li a{       /*imposto un padding per il collegamento*/
+   padding: 10px;
 }
 

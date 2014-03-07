@@ -40,14 +40,24 @@
                 xmlhttp.send();
             }
 
-            function playDateIII(choir) {
+            function playDateIII(choir, typ) {
                 idDate = document.getElementById("idDate").value;
 
-                text = "Iserisci la password qui: <input type='password' name='txtPassword' id='txtPassword'><br /><br />";
-                text += "<div><input type= 'button' onclick='javascript:playDateIV()' value='conferma'></div>"
-                text += "<input type='hidden' id='idDate' name='idDate' value='" + idDate + "'>";
-
-                document.getElementById("cont").innerHTML = text;
+                if (typ == 'C') {
+                    text = "Iserisci la password qui: <input type='password' name='txtPassword' id='txtPassword'><br /><br />";
+                    text += "<div><input type= 'button' onclick='javascript:playDateIV()' value='conferma'></div>"
+                    text += "<input type='hidden' id='idDate' name='idDate' value='" + idDate + "'>";
+                    document.getElementById("cont").innerHTML = text;
+                } else {
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("data").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open("GET", "showMembers.php?type=" + typ + "&idDate=" + idDate + "&choirId=" + choir, true);
+                    xmlhttp.send();
+                }
 
             }
 
@@ -110,11 +120,11 @@
 
             function submitChoir() {
 
-                document.getElementById("cont").innerHTML = "";
-                document.getElementById("data").innerHTML = "";
-
                 name = document.getElementById("txtName").value;
                 password = document.getElementById("txtPassword").value;
+
+                document.getElementById("cont").innerHTML = "";
+                document.getElementById("data").innerHTML = "";
 
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function () {
@@ -124,6 +134,20 @@
                 }
                 xmlhttp.open("GET", "insertChoir.php?txtName=" + name + "&txtPassword=" + password, true);
                 xmlhttp.send();
+            }
+
+            function sxMenu(id) {
+                document.getElementById(id.substring(0, 5)).className = 'menuSxVisible';
+            }
+
+
+            function stay(id) {
+                document.getElementById(id).className = 'menuSxVisible';
+            }
+
+            function sxMenu1stop(id) {
+                document.getElementById(id).className = "";
+                document.getElementById(id).className = "none";
             }
 
         </script>
@@ -155,18 +179,18 @@
                
             </div>
 
-            <div class="menuSinistraComparsa">
+            <div class="menuSinistraComparsa" >
                    <ul id="nav">
-                       <li>
-                           <div class="ulTitle1"><a><strong>Date</strong></a></div>
-                           <ul>               
+                       <li style="width: 70px;">
+                           <div class="ulTitle1" onmouseout="javascript:sxMenu1stop('menu1')" onmouseover="javascript:sxMenu('menu1')"><a onmouseover="javascript:sxMenu(this.id)" id="menu1A"><strong>Date</strong></a></div>
+                           <ul id ="menu1" class="none" onmouseover="javascript:stay(this.id)" onmouseout="javascript:sxMenu1stop(this.id)" onclick="javascript:sxMenu1stop('menu1')">               
                                 <li><a href="javascript:showDate()">Visualizza date da coprire</a></li>
                                 <li><a href="#">Iserisci nuova data</a></li>
                            </ul>
                        </li>
                         <li>
-                            <div class="ulTitle2"><a><strong>Cori/Solisti</strong></a></div>
-                            <ul>               
+                            <div class="ulTitle2" onmouseout="javascript:sxMenu1stop('menu2')" onmouseover="javascript:sxMenu('menu2')"><a onmouseover="javascript:sxMenu(this.id)" id="menu2A"><strong>Cori/Solisti</strong></a></div>
+                            <ul id="menu2" class="none" onmouseover="javascript:stay(this.id)" onmouseout="javascript:sxMenu1stop(this.id)" onclick="javascript:sxMenu1stop('menu2')">               
                                 <li><a href="javascript:insertChoir()">Inserisci Coro</a></li>
                            </ul>
                         </li>

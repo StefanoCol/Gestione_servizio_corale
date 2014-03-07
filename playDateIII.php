@@ -13,8 +13,12 @@
     if($riga[0] == $_GET["password"]){
         $command = "INSERT INTO `servizio_cori`.`servizi_coperti_cori` (`idDataServizio`, `idCoro`) VALUES ('".$_GET['idDataServizio']."', '".$_GET['choirName']."')";
         mysql_query($command, $connection);
+        $command = "UPDATE date_servizi SET isCoperta = 1 WHERE idDataServizio = ".$_GET['idDataServizio'];
+        mysql_query($command, $connection);
 
         echo "Inserimento avvenuto correttamente";
+
+        
 
     }else{
         echo "password non corretta!!";
