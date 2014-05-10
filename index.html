@@ -3,11 +3,14 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="Style/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="Style/style.css">        
         <link href='http://fonts.googleapis.com/css?family=Gafata' rel='stylesheet' type='text/css'>
         <title></title>
         
         <script lang="javascript">
+
+            var addSolista = false;
 
             function playDate(id) {
 
@@ -20,12 +23,17 @@
                         document.getElementById("data").innerHTML = xmlhttp.responseText;
                     }
                 }
-                xmlhttp.open("GET", "showChoirOR.php?idDate=" + id, true);
+                xmlhttp.open("GET", "Script/php/showChoirOR.php?idDate=" + id, true);
                 xmlhttp.send();
             }
 
-            function playDateII(type) {
-                idDate = document.getElementById("idDate").value;
+            function playDateII(type, data) {
+                if (data == null)
+                    idDate = document.getElementById("idDate").value;
+                else {
+                    idDate = data;
+                    addSolista = true;
+                }
 
                 document.getElementById("cont").innerHTML = "";
                 document.getElementById("data").innerHTML = "";
@@ -36,7 +44,7 @@
                         document.getElementById("data").innerHTML = xmlhttp.responseText;
                     }
                 }
-                xmlhttp.open("GET", "playDateII.php?type=" + type + "&idDate=" + idDate, true);
+                xmlhttp.open("GET", "Script/php/playDateII.php?type=" + type + "&idDate=" + idDate, true);
                 xmlhttp.send();
             }
 
@@ -55,34 +63,62 @@
                             document.getElementById("data").innerHTML = xmlhttp.responseText;
                         }
                     }
-                    xmlhttp.open("GET", "showMembers.php?type=" + typ + "&idDate=" + idDate + "&choirId=" + choir, true);
+                    xmlhttp.open("GET", "Script/php/showMembers.php?type=" + typ + "&idDate=" + idDate + "&choirId=" + choir, true);
                     xmlhttp.send();
                 }
 
             }
 
-            function playDateIV(choirName) {
+            function playDateIV(choirName, typ) {
 
-                idDate = document.getElementById("idDate").value;
+                if (typ == null) {
+                    idDate = document.getElementById("idDate").value;
 
-                password = document.getElementById("txtPassword").value;
-                choirName = document.getElementById("slcChoir").value;
+                    password = document.getElementById("txtPassword").value;
+                    choirName = document.getElementById("slcChoir").value;
 
-                //alert(password);
+                    text = choirName + " " + password;
 
-                text = choirName + " " + password;
+                    document.getElementById("cont").innerHTML = "";
+                    document.getElementById("data").innerHTML = "";
 
-                document.getElementById("cont").innerHTML = "";
-                document.getElementById("data").innerHTML = "";
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("data").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open("GET", "Script/php/playDateIII.php?choirName=" + choirName + "&password=" + password + "&idDataServizio=" + idDate, true);
+                    xmlhttp.send();
+                } else if (typ == 'S') {
+                    txtPassword = document.getElementById("txtPassword");
+                    if (txtPassword == null) {
+                        text = 'Iserisci la password qui: <input type="password" name="txtPassword" id="txtPassword"><br /><br />';
+                        text += '<div><input type= "button" onclick="javascript:playDateIV(' + '\'' + document.getElementById('slcChoir').value + '\', ' + '\'S\'' + ')" value="conferma"></div>'
+                        text += '<input type="hidden" id="idDate" name="idDate" value="' + idDate + '">';
+                        document.getElementById('cont').innerHTML = text;
+                    } else {
+                        password = txtPassword.value;
+                        choirName = document.getElementById("slcChoir").value;
+                        var idSolista = document.getElementById("slcMember").value;
 
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function () {
-                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                        document.getElementById("data").innerHTML = xmlhttp.responseText;
+                        document.getElementById("cont").innerHTML = "";
+                        document.getElementById("data").innerHTML = "";
+
+                        var xmlhttp = new XMLHttpRequest();
+                        xmlhttp.onreadystatechange = function () {
+                            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                document.getElementById("data").innerHTML = xmlhttp.responseText;
+                            }
+                        }
+                        if (addSolista == false)
+                            xmlhttp.open("GET", "Script/php/SolistaData.php?choirName=" + choirName + "&password=" + password + "&idDataServizio=" + idDate + "&idSolista=" + idSolista, true);
+                        else
+                            xmlhttp.open("GET", "Script/php/SolistaData.php?choirName=" + choirName + "&password=" + password + "&idDataServizio=" + idDate + "&idSolista=" + idSolista, true);
+                        xmlhttp.send();
+
                     }
                 }
-                xmlhttp.open("GET", "playDateIII.php?choirName=" + choirName + "&password=" + password + "&idDataServizio=" + idDate, true);
-                xmlhttp.send();
 
             }
 
@@ -99,7 +135,7 @@
                         document.getElementById("data").innerHTML = xmlhttp.responseText;
                     }
                 }
-                xmlhttp.open("GET", "showDate.php");
+                xmlhttp.open("GET", "Script/php/showDate.php");
                 xmlhttp.send();
             }
 
@@ -132,7 +168,7 @@
                         document.getElementById("cont").innerHTML = xmlhttp.responseText;
                     }
                 }
-                xmlhttp.open("GET", "insertChoir.php?txtName=" + name + "&txtPassword=" + password, true);
+                xmlhttp.open("GET", "Script/php/insertChoir.php?txtName=" + name + "&txtPassword=" + password, true);
                 xmlhttp.send();
             }
 
@@ -148,6 +184,163 @@
             function sxMenu1stop(id) {
                 document.getElementById(id).className = "";
                 document.getElementById(id).className = "none";
+            }
+
+            function InsertNewDate() {
+                document.getElementById("contenutomS").innerHTML = "Inserisci nuova data";
+
+                document.getElementById("cont").innerHTML = "";
+                document.getElementById("data").innerHTML = "";
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("cont").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET", "Script/php/NewDate.php", true);
+                xmlhttp.send();
+            }
+
+            function InsertNewDateII() {
+                var tipoServizio = document.getElementById("tipoServizio").value;
+                var data = document.getElementById("dataServizio").value;
+                var ora = document.getElementById("oraServizio").value;
+                var toponimo = document.getElementById("toponimo").value;
+                var indirizzo = document.getElementById("Indirizzo").value;
+                var civico = document.getElementById("civico").value;
+                var provincia = document.getElementById("Provincia").value;
+
+                document.getElementById("cont").innerHTML = "";
+                document.getElementById("data").innerHTML = "";
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("data").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET", "Script/php/InsertNewDate.php?tipoServizio=" + tipoServizio + "&data=" + data + "&ora=" + ora + "&toponimo=" + toponimo + "&indirizzo=" + indirizzo + "&civico=" + civico + "&provincia=" + provincia, true);
+                xmlhttp.send();
+
+            }
+
+            function inserisciElemento() {
+                document.getElementById("contenutomS").innerHTML = "Inserisci un nuovo elemento al coro";
+
+                document.getElementById("cont").innerHTML = "";
+                document.getElementById("data").innerHTML = "";
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("cont").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET", "Script/php/NuovoElemento.php", true);
+                xmlhttp.send();
+            }
+
+            function inserisciElementoII() {
+                var nome = document.getElementById("nome").value;
+                var cognome = document.getElementById("cognome").value;
+                var idCoro = document.getElementById("slcChoir").value;
+                var toponimo = document.getElementById("toponimo").value;
+                var indirizzo = document.getElementById("Indirizzo").value;
+                var civico = document.getElementById("civico").value;
+                var provincia = document.getElementById("Provincia").value;
+                var telefono = document.getElementById("telefono").value;
+                var passwordCoro = document.getElementById("passwordCoro").value;
+                var passwordElemento = document.getElementById("passwordElemento").value;
+                var ruolo = document.getElementById("ruolo").value;
+
+                if (ruolo == 'chitarrista') {
+
+                    document.getElementById("cont").innerHTML = "";
+                    document.getElementById("data").innerHTML = "";
+
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("data").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open("GET", "Script/php/InserisciChitarrista.php?toponimo=" + toponimo
+                        + "&indirizzo=" + indirizzo
+                        + "&civico=" + civico
+                        + "&idCoro=" + idCoro
+                        + "&passwordCoro=" + passwordCoro
+                        + "&passwordElemento=" + passwordElemento
+                        + "&nome=" + nome
+                        + "&cognome=" + cognome
+                        + "&provincia=" + provincia
+                        + "&telefono=" + telefono, true);
+                    xmlhttp.send();
+
+                } else {
+
+                    var voce = document.getElementById("slcVoci").value;
+                    var solista = document.getElementById("slcSolista").value;
+
+                    document.getElementById("cont").innerHTML = "";
+                    document.getElementById("data").innerHTML = "";
+
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("data").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open("GET", "Script/php/InserisciCorista.php?toponimo=" + toponimo
+                        + "&indirizzo=" + indirizzo
+                        + "&civico=" + civico
+                        + "&idCoro=" + idCoro
+                        + "&passwordCoro=" + passwordCoro
+                        + "&passwordElemento=" + passwordElemento
+                        + "&nome=" + nome
+                        + "&cognome=" + cognome
+                        + "&provincia=" + provincia
+                        + "&voce=" + voce
+                        + "&solista=" + solista
+                        + "&telefono=" + telefono, true);
+                    xmlhttp.send();
+
+                }
+
+            }
+
+            function opzioniMembro(tipo) {
+                if (tipo == 'corista') {
+                    var tipiVoci = document.getElementById("divOpzioniVoce");
+                    tipiVoci.innerHTML = "<div class='col-xs-6'>Tipo di voce: <select name='slcVoci' id='slcVoci'>"
+                                        + " <option value='soprano'>Soprano</option>"
+                                        + " <option value='contralto'>Contralto</option>"
+                                        + " <option value='tenore'>Tenore</option>"
+                                        + "<option value='barittono'>Barittono</option>"
+                                        + "</select></div>"
+                                        + "<div class='col-xs-6'>Solista: <select name='slcSolista' id='slcSolista'>"
+                                        + " <option value='0'>No</option>"
+                                        + " <option value='1'>Si</option>"
+                                        + "</select></div>";
+                } else {
+                    alert('null');
+                }
+            }
+
+            function InserisciNuovoSolista() {
+                document.getElementById("cont").innerHTML = "";
+                document.getElementById("data").innerHTML = "";
+
+                document.getElementById("contenutomS").innerHTML = "Visualizza le date da coprire";
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("data").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET", "Script/php/mostraDateCoperte.php");
+                xmlhttp.send();
             }
 
         </script>
@@ -185,13 +378,15 @@
                            <div class="ulTitle1" onmouseout="javascript:sxMenu1stop('menu1')" onmouseover="javascript:sxMenu('menu1')"><a onmouseover="javascript:sxMenu(this.id)" id="menu1A"><strong>Date</strong></a></div>
                            <ul id ="menu1" class="none" onmouseover="javascript:stay(this.id)" onmouseout="javascript:sxMenu1stop(this.id)" onclick="javascript:sxMenu1stop('menu1')">               
                                 <li><a href="javascript:showDate()">Visualizza date da coprire</a></li>
-                                <li><a href="#">Iserisci nuova data</a></li>
+                                <li><a href="javascript:InsertNewDate()">Iserisci nuova data</a></li>
+                               <li><a href="javascript:InserisciNuovoSolista()">Aggiungi un solista ad una data</a></li>
                            </ul>
                        </li>
                         <li>
                             <div class="ulTitle2" onmouseout="javascript:sxMenu1stop('menu2')" onmouseover="javascript:sxMenu('menu2')"><a onmouseover="javascript:sxMenu(this.id)" id="menu2A"><strong>Cori/Solisti</strong></a></div>
                             <ul id="menu2" class="none" onmouseover="javascript:stay(this.id)" onmouseout="javascript:sxMenu1stop(this.id)" onclick="javascript:sxMenu1stop('menu2')">               
-                                <li><a href="javascript:insertChoir()">Inserisci Coro</a></li>
+                                <li><a href="javascript:insertChoir()">Inserisci un Coro</a></li>
+                                <li><a href="javascript:inserisciElemento()">Inserisci un Elemento</a></li>
                            </ul>
                         </li>
                     </ul>

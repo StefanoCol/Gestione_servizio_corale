@@ -1,8 +1,6 @@
 <input type="hidden" id="idDate" name="idDate" value="<?php echo $_GET['idDate']?>">
 <?php
-    $host = "localhost";   
-    $user = "root";
-    $pass = "";
+    require("config.php");
     $connection = mysql_connect($host,$user,$pass);    
     mysql_select_db('servizio_cori', $connection);
     if ($_GET['type'] == 'Coro'){
@@ -20,7 +18,7 @@
 
         echo "</select>";
     }else if($_GET['type'] == 'Solista'){
-        echo "A quale coro appartiene il solista o il chitarrista?";
+        echo "A quale coro appartiene il solista?";
         echo '<br /><select name="slcChoir" id="slcChoir" onchange="javascript:playDateIII(this.value, \'S\')">';
         echo '<option value="null">--seleziona il coro qui--</option>';
 

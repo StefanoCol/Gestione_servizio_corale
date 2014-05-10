@@ -1,8 +1,6 @@
 <?php
 
-    $host = "localhost";   
-    $user = "root";
-    $pass = "";
+    require("config.php");
     $connection = mysql_connect($host,$user,$pass);    
     mysql_select_db('servizio_cori', $connection);
     $query = "INSERT INTO `cori`(`nome`, `Password`) VALUES ('".$_GET['txtName']."','".$_GET['txtPassword']."')";
