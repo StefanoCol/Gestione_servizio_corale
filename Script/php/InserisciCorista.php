@@ -22,7 +22,6 @@
         $riga = mysql_fetch_row(mysql_query($query, $connection));
 
         $query = "INSERT INTO coristi (idCorista, IsSolista, Voce) VALUES (".$riga[0].",".$_GET['solista'].",'".$_GET['voce']."');";
-        echo $query;
         $result = mysql_query($query, $connection) or die("Query non valida: " . mysql_error());
 
         echo "Nuova chitarrista inserito correttamente!";

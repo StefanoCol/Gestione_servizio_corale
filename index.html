@@ -343,6 +343,135 @@
                 xmlhttp.send();
             }
 
+            function visualizzaElementi() {
+                document.getElementById("cont").innerHTML = "";
+                document.getElementById("data").innerHTML = "";
+
+                document.getElementById("contenutomS").innerHTML = "Seleziona il coro";
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("data").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET", "Script/php/SelezionaCoro.php");
+                xmlhttp.send();
+            }
+
+            function visualizzaElementiII(idCoro) {
+                document.getElementById("cont").innerHTML = "";
+                document.getElementById("data").innerHTML = "";
+
+                document.getElementById("contenutomS").innerHTML = "Lista degli elementi";
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("data").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET", "Script/php/visualizzaElementi.php?choirId=" + idCoro);
+                xmlhttp.send();
+            }
+
+            function cancellaElemento(id) {
+                if( confirm("sei sicuro?") === false) return;
+                document.getElementById("cont").innerHTML = "";
+                document.getElementById("data").innerHTML = "";
+
+                document.getElementById("contenutomS").innerHTML = "Lista degli elementi";
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("data").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET", "Script/php/EliminaElemento.php?id=" + id);
+                xmlhttp.send();
+            }
+
+            function modificaElemento(id, tipo) {
+                document.getElementById("cont").innerHTML = "";
+                document.getElementById("data").innerHTML = "";
+
+                document.getElementById("contenutomS").innerHTML = "Lista degli elementi";
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("data").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET", "Script/php/ModificaElemento.php?id=" + id + "&tipo=" + tipo);
+                xmlhttp.send();
+            }
+
+            function modificaElementoII(id, tipo) {
+                var nome = document.getElementById("nome").value;
+                var cognome = document.getElementById("cognome").value;
+                var toponimo = document.getElementById("toponimo").value;
+                var indirizzo = document.getElementById("Indirizzo").value;
+                var civico = document.getElementById("civico").value;
+                var provincia = document.getElementById("Provincia").value;
+                var telefono = document.getElementById("telefono").value;
+                var passwordElemento = document.getElementById("passwordElemento").value;
+                var ruolo = tipo;
+
+                if (ruolo == 'chita') {
+
+                    document.getElementById("cont").innerHTML = "";
+                    document.getElementById("data").innerHTML = "";
+
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("data").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open("GET", "Script/php/modificaChitarrista.php?toponimo=" + toponimo
+                        + "&indirizzo=" + indirizzo
+                        + "&civico=" + civico
+                        + "&passwordElemento=" + passwordElemento
+                        + "&nome=" + nome
+                        + "&cognome=" + cognome
+                        + "&provincia=" + provincia
+                        + "&id=" + id
+                        + "&telefono=" + telefono, true);
+                    xmlhttp.send();
+
+                } else {
+
+                    var voce = document.getElementById("slcVoci").value;
+                    var solista = document.getElementById("slcSolista").value;
+
+                    document.getElementById("cont").innerHTML = "";
+                    document.getElementById("data").innerHTML = "";
+
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            document.getElementById("data").innerHTML = xmlhttp.responseText;
+                        }
+                    }
+                    xmlhttp.open("GET", "Script/php/modificaCorista.php?toponimo=" + toponimo
+                        + "&indirizzo=" + indirizzo
+                        + "&civico=" + civico
+                        + "&passwordElemento=" + passwordElemento
+                        + "&nome=" + nome
+                        + "&cognome=" + cognome
+                        + "&provincia=" + provincia
+                        + "&voce=" + voce
+                        + "&solista=" + solista
+                        + "&id=" + id
+                        + "&telefono=" + telefono, true);
+                    xmlhttp.send();
+
+                }
+
+            }
+
         </script>
         
     </head>
@@ -387,6 +516,7 @@
                             <ul id="menu2" class="none" onmouseover="javascript:stay(this.id)" onmouseout="javascript:sxMenu1stop(this.id)" onclick="javascript:sxMenu1stop('menu2')">               
                                 <li><a href="javascript:insertChoir()">Inserisci un Coro</a></li>
                                 <li><a href="javascript:inserisciElemento()">Inserisci un Elemento</a></li>
+                                <li><a href="javascript:visualizzaElementi()">Visualizza/modifica/elimina gli elementi</a></li>
                            </ul>
                         </li>
                     </ul>

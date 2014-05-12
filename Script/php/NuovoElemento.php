@@ -48,8 +48,8 @@
         <div class="col-xs-6">
             <select name="toponimo" id="toponimo">
                 <option value="Via">Via</option>
-                <option value="Via">Piazza</option>
-                <option value="Via">Viale</option>
+                <option value="Piazza">Piazza</option>
+                <option value="Viale">Viale</option>
             </select>
             <input type="text" id="Indirizzo" name="Indirizzo" />
             civico:
