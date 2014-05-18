@@ -51,7 +51,7 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <input type="button" name="btnEnterDate" value="Invia" onClick = "javascript:InsertNewMemberII()">
+            <input type="button" name="btnEnterDate" value="Invia" onClick = "javascript:InsertNewDateII()">
         </div>
     </div>
 </div>

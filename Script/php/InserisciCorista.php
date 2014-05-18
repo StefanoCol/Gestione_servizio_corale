@@ -24,7 +24,7 @@
         $query = "INSERT INTO coristi (idCorista, IsSolista, Voce) VALUES (".$riga[0].",".$_GET['solista'].",'".$_GET['voce']."');";
         $result = mysql_query($query, $connection) or die("Query non valida: " . mysql_error());
 
-        echo "Nuova chitarrista inserito correttamente!";
+        echo "Nuova corista inserito correttamente!";
         
     }else{
         echo "password non corretta!!";
